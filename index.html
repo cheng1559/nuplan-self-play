@@ -52,9 +52,10 @@ img { height: auto; }
 header.hero { padding-block: 72px 28px; text-align: center; }
 .venue { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 18px; }
 h1 {
-  font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 4.6vw, 46px);
-  line-height: 1.15; letter-spacing: -.01em; margin: 0 auto 22px; max-width: 900px; text-wrap: balance;
+  font-family: var(--serif); font-weight: 600; font-size: clamp(28px, 3.5vw, 38px);
+  line-height: 1.2; letter-spacing: -.01em; margin: 0 auto 22px; text-wrap: balance;
 }
+@media (min-width: 900px) { h1 .l { display: block; white-space: nowrap; } }
 .authors { font-size: 19px; margin: 0; }
 .affil { color: var(--ink-2); margin: 2px 0 0; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 26px; }
@@ -136,6 +137,79 @@ p code, li code { background: var(--code-bg); padding: 1px 5px; border-radius: 4
 
 footer { border-top: 1px solid var(--rule); padding-block: 28px 48px; text-align: center; color: var(--muted); font-size: 14px; }
 
+/* Charts */
+:root { --c-gpu1: #8080dd; --grid: #ece9e3; --axis: #b9b5ab; }
+.chart-fig .plate { padding: 16px 18px 14px; }
+.chart-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 18px; margin-bottom: 10px; }
+.chart-title { margin: 0; font-weight: 600; font-size: 15px; color: var(--ink); }
+.legend { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; padding: 0; font-size: 14px; color: var(--ink-2); }
+.legend li { display: inline-flex; align-items: center; gap: 7px; }
+.key { display: inline-block; flex: none; position: relative; }
+.key.line { width: 18px; height: 2px; border-radius: 1px; background: var(--c); }
+.key.line.dot::after { content: ""; position: absolute; left: 5px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.key.box { width: 10px; height: 10px; border-radius: 2px; background: var(--c); margin-right: 7px; vertical-align: -1px; }
+.multiples { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.panel { min-width: 0; }
+.panel-title { margin: 0 0 2px; font-size: 14px; color: var(--ink-2); }
+.chart { position: relative; min-width: 0; }
+.chart svg { display: block; overflow: visible; outline: none; touch-action: pan-y; }
+.chart svg:focus-visible { box-shadow: 0 0 0 2px var(--orange); border-radius: 4px; }
+.chart .grid { stroke: var(--grid); stroke-width: 1; }
+.chart .axis { stroke: var(--axis); stroke-width: 1; }
+.chart .tick, .chart .axis-label { font: 12px var(--sans); fill: var(--muted); font-variant-numeric: tabular-nums; }
+.chart .series { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .marker, .chart .end, .chart .hover-dot { stroke: var(--paper); stroke-width: 2; }
+.chart .cross { stroke: var(--ink-2); stroke-width: 1; }
+.tip {
+  position: absolute; z-index: 5; pointer-events: none; min-width: 150px;
+  background: var(--paper); border: 1px solid var(--rule-strong); border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(30, 28, 20, .12); padding: 7px 10px; font-size: 13px; line-height: 1.45;
+}
+.tip .tip-head { color: var(--muted); margin-bottom: 2px; }
+.tip .tip-row { display: flex; align-items: center; gap: 8px; }
+.tip .tip-row .key.line { width: 14px; }
+.tip .tip-row b { font-variant-numeric: tabular-nums; color: var(--ink); min-width: 34px; }
+.tip .tip-row span.name { color: var(--ink-2); }
+.data-view { margin-top: 10px; font-size: 14px; }
+.data-view summary { cursor: pointer; color: var(--ink-2); }
+.data-scroll { max-height: 260px; overflow: auto; margin-top: 8px; border-top: 1px solid var(--rule); }
+table.mini { min-width: 0; width: 100%; font-size: 14px; }
+table.mini th, table.mini td { padding: 4px 8px; }
+table.mini thead th { position: sticky; top: 0; background: var(--paper); }
+.split { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; align-items: stretch; }
+.bars { display: grid; gap: 4px; }
+.bar-row { display: grid; grid-template-columns: minmax(0, 218px) minmax(0, 1fr); align-items: center; gap: 10px; border-radius: 4px; outline: none; }
+.bar-row:hover, .bar-row:focus-visible { background: var(--bg); }
+.bar-label { text-align: right; font-size: 13.5px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-label .n { color: var(--muted); font-size: 12px; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.bar-track { position: relative; height: 22px; margin-right: 34px; }
+.bar-track .gl { position: absolute; top: -2px; bottom: -2px; width: 1px; background: var(--grid); }
+.bar-track .zero { background: var(--axis); }
+.bar { position: absolute; top: 4px; height: 14px; background: var(--c); }
+.bar.pos { border-radius: 0 4px 4px 0; }
+.bar.neg { border-radius: 4px 0 0 4px; }
+.bar-val { position: absolute; top: 2px; font-size: 12.5px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bar-axis { display: grid; grid-template-columns: minmax(0, 218px) minmax(0, 1fr); gap: 10px; margin-top: 4px; }
+.bar-axis .ticks { margin-right: 34px; position: relative; height: 18px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar-axis .ticks span { position: absolute; transform: translateX(-50%); }
+.bar-axis .cap { grid-column: 2; margin-right: 34px; text-align: center; font-size: 12px; color: var(--muted); }
+table.sub td:first-child, table.sub th:first-child { padding-left: 8px; }
+table.sub tbody th { text-align: left; font-weight: 600; color: var(--ink-2); vertical-align: middle; }
+table.sub td.run { text-align: left; white-space: nowrap; padding-left: 8px; }
+table.sub tr.first td, table.sub tr.first th { border-top: 1px solid var(--rule); }
+.table-wrap { overflow-x: auto; }
+.table-note { font-size: 13px; color: var(--muted); margin: 10px 0 0; line-height: 1.5; }
+@media (max-width: 760px) {
+  .multiples, .split { grid-template-columns: minmax(0, 1fr); }
+  .bars { gap: 8px; }
+  .bar-row, .bar-axis { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .bar-axis > span:first-child { display: none; }
+  .bar-axis .cap { grid-column: 1; }
+  .bar-label { text-align: left; white-space: normal; font-size: 13px; }
+  table.mini th, table.mini td { padding: 4px 5px; }
+  table.mini { font-size: 13px; }
+}
+
 @media (max-width: 760px) {
   body { font-size: 16px; }
   header.hero { padding-block: 44px 20px; }
@@ -154,7 +228,7 @@ footer { border-top: 1px solid var(--rule); padding-block: 28px 48px; text-align
 
 <header class="hero">
   <p class="venue">CS5478 Intelligent Robots: Algorithms and Systems · Final Project</p>
-  <h1>Self-Play Reinforcement Learning for Closed-Loop Motion Planning without Human Trajectories</h1>
+  <h1><span class="l">Self-Play Reinforcement Learning for Closed-Loop</span> <span class="l">Motion Planning without Human Trajectories</span></h1>
   <p class="authors">Hu Chengcheng</p>
   <p class="affil">National University of Singapore</p>
   <nav class="links" aria-label="Project links">
@@ -266,9 +340,28 @@ footer { border-top: 1px solid var(--rule); padding-block: 28px 48px; text-align
   <div class="prose">
     <p>The same network trained on one GPU stays well below the 8-GPU run: what separates them is the years of driving each run collects. Self-play also trains more smoothly. Its curve rises steadily over 37 years of experience, while the run against replayed traffic degrades late in training.</p>
   </div>
-  <figure>
-    <div class="plate"><img src="static/img/curves.png" alt="Val14 score in our simulator against years of driving experience" width="1642" height="461" loading="lazy"></div>
-    <figcaption><b>Training curves</b> (our simulator; these show training dynamics, not benchmark results). The x-axis is the driving experience of all learners. (a)&nbsp;Replayed traffic on one GPU and on eight. (b,&nbsp;c)&nbsp;The three settings, scored with <span class="rp">replayed</span>, <span class="sp">self-play</span> and <span class="dr">self-play&nbsp;+&nbsp;DR</span> policies in non-reactive and reactive traffic.</figcaption>
+  <figure class="chart-fig" id="fig-curves">
+    <div class="plate">
+      <div class="chart-top">
+        <p class="chart-title">Val14 score in our simulator against years of driving experience</p>
+        <ul class="legend" aria-label="Runs">
+          <li><span class="key line dot" style="--c: var(--c-gpu1)"></span>Replayed traffic, 1&nbsp;GPU</li>
+          <li><span class="key line" style="--c: var(--blue)"></span>Replayed traffic</li>
+          <li><span class="key line" style="--c: var(--orange)"></span>Self-play</li>
+          <li><span class="key line" style="--c: var(--teal)"></span>Self-play + DR</li>
+        </ul>
+      </div>
+      <div class="multiples">
+        <div class="panel"><p class="panel-title">(a) Replayed traffic: 1 vs 8 GPUs</p><div class="chart" data-chart="scale"></div></div>
+        <div class="panel"><p class="panel-title">(b) Non-reactive traffic</p><div class="chart" data-chart="nr"></div></div>
+        <div class="panel"><p class="panel-title">(c) Reactive traffic</p><div class="chart" data-chart="r"></div></div>
+      </div>
+      <details class="data-view">
+        <summary>Data table</summary>
+        <div class="data-scroll"><table class="mini" id="curves-table"><thead><tr><th>Run</th><th>Traffic</th><th>Years</th><th>Val14 score</th></tr></thead><tbody></tbody></table></div>
+      </details>
+    </div>
+    <figcaption><b>Training curves.</b> Unless marked, every run uses 8 GPUs. These curves come from our simulator, where scenes start at the scenario token rather than 3&nbsp;s earlier, reactive traffic uses our rule-based pedestrians, and driving-direction compliance is not scored. They show training dynamics, not benchmark results. Hover or focus a panel to read the values.</figcaption>
   </figure>
 
   <h3 class="prose">Where self-play gains, and what the score misses</h3>
@@ -276,9 +369,35 @@ footer { border-top: 1px solid var(--rule); padding-block: 28px 48px; text-align
     <p>Self-play is safer in interactions. In reactive traffic its no-at-fault-collision score is 97.7 against 93.5, and its TTC score is 95.0 against 86.0. It pays with a little progress. The gain is largest where cars interact; the one clear loss is waiting for pedestrians to cross, likely because training uses simple rule-based pedestrians.</p>
     <p>Domain randomization halves at-fault collisions in reactive traffic but leaves the score unchanged. nuPlan measures progress against the human driver, so more cautious driving loses progress. Collision and TTC rates deserve to be reported next to the score.</p>
   </div>
-  <figure>
-    <div class="plate"><img src="static/img/types.png" alt="Score difference per scenario type and Val14 sub-metrics" width="1613" height="605" loading="lazy"></div>
-    <figcaption><b>Left:</b> Val14 R score difference between self-play and replayed-traffic training, per scenario type with at least 30 scenarios. <b>Right:</b> Val14 sub-metrics (devkit, ×100): no at-fault collision, TTC within bound, progress relative to the human driver, and comfort.</figcaption>
+  <figure class="chart-fig" id="fig-types">
+    <div class="split">
+      <div class="plate">
+        <div class="chart-top">
+          <p class="chart-title">Val14 R score, self-play minus replayed traffic, by scenario type</p>
+          <ul class="legend" aria-label="Direction">
+            <li><span class="key box" style="--c: var(--orange)"></span>Self-play better</li>
+            <li><span class="key box" style="--c: var(--blue)"></span>Replayed traffic better</li>
+          </ul>
+        </div>
+        <div class="bars" id="types-chart" role="list" aria-label="Score difference per scenario type"></div>
+      </div>
+      <div class="plate">
+        <div class="chart-top"><p class="chart-title">Val14 sub-metrics (devkit, ×100)</p></div>
+        <div class="table-wrap"><table class="mini sub">
+          <thead><tr><th></th><th>Training</th><th title="nuPlan score">Score</th><th title="No at-fault collision">Coll.</th><th title="Time to collision within bound">TTC</th><th title="Progress relative to the human driver">Prog.</th><th title="Comfort">Comf.</th></tr></thead>
+          <tbody>
+            <tr class="first"><th rowspan="3" scope="rowgroup">NR</th><td class="run"><span class="key box" style="--c: var(--blue)"></span>Replayed</td><td>88.9</td><td>95.9</td><td>86.0</td><td><b>95.8</b></td><td>95.8</td></tr>
+            <tr><td class="run"><span class="key box" style="--c: var(--orange)"></span>Self-play</td><td><b>90.2</b></td><td><b>97.1</b></td><td><b>94.0</b></td><td>88.8</td><td><b>96.4</b></td></tr>
+            <tr><td class="run"><span class="key box" style="--c: var(--teal)"></span>+ DR</td><td>87.5</td><td>96.9</td><td>92.1</td><td>83.4</td><td>92.8</td></tr>
+            <tr class="first"><th rowspan="3" scope="rowgroup">R</th><td class="run"><span class="key box" style="--c: var(--blue)"></span>Replayed</td><td>86.3</td><td>93.5</td><td>86.0</td><td><b>92.2</b></td><td>95.2</td></tr>
+            <tr><td class="run"><span class="key box" style="--c: var(--orange)"></span>Self-play</td><td><b>90.5</b></td><td>97.7</td><td>95.0</td><td>88.5</td><td><b>96.7</b></td></tr>
+            <tr><td class="run"><span class="key box" style="--c: var(--teal)"></span>+ DR</td><td>90.3</td><td><b>98.8</b></td><td><b>95.7</b></td><td>83.3</td><td>95.6</td></tr>
+          </tbody>
+        </table></div>
+        <p class="table-note">Coll.: no at-fault collision. TTC: time to collision within bound. Prog.: progress relative to the human driver. Comf.: comfort. Bold: best of the three.</p>
+      </div>
+    </div>
+    <figcaption><b>Where self-play gains.</b> The bars cover the scenario types with at least 30 Val14 scenarios; the number after each type is its scenario count. The table gives the devkit sub-metrics of the three policies.</figcaption>
   </figure>
 </section>
 
@@ -352,6 +471,216 @@ uv run sim-visualizer --artifact-root data/nuplan/val14 --artifact-root data/nup
 <footer>
   <div class="wrap">Built on the <a href="https://www.nuscenes.org/nuplan">nuPlan</a> dataset and devkit.</div>
 </footer>
+
+<script type="application/json" id="chart-data">{"curves":{"gpu1_nr":[[0.2,44.4],[0.409,49.2],[0.622,62.3],[0.834,70.3],[1.046,62.2],[1.259,74.4],[1.475,70.0],[1.687,73.3],[1.903,72.7],[2.115,62.7],[2.331,79.9],[2.546,75.5],[2.759,65.9],[2.974,77.1],[3.19,78.4],[3.402,78.4],[3.618,77.1]],"nr_nr":[[0.0,46.8],[0.403,46.0],[0.847,56.7],[1.3,67.3],[1.754,60.6],[2.207,56.4],[2.664,65.9],[3.12,70.1],[3.58,67.9],[4.033,73.8],[4.49,74.3],[4.95,80.1],[5.407,81.9],[5.863,72.3],[6.32,74.7],[6.78,83.6],[7.236,78.9],[7.693,78.9],[8.153,83.6],[8.609,81.2],[9.066,77.5],[9.526,85.3],[9.982,84.6],[10.442,83.5],[10.902,88.2],[11.358,84.0],[11.818,89.3],[12.278,88.2],[12.735,86.6],[13.194,83.6],[13.654,86.3],[14.114,82.2],[14.571,83.1],[15.03,81.0],[15.49,86.6],[15.95,85.7],[16.41,88.1],[16.866,84.3],[17.326,82.7],[17.786,86.2],[18.246,84.9],[18.706,86.3],[19.165,83.4],[19.622,83.2],[20.082,82.0],[20.538,82.9],[20.722,83.3]],"sp_nr":[[0.0,46.8],[0.656,55.2],[1.357,67.9],[2.064,74.1],[2.775,77.0],[3.485,81.7],[4.198,84.5],[4.909,85.6],[5.622,86.6],[6.336,87.6],[7.046,88.4],[7.759,88.3],[8.473,88.0],[9.186,88.2],[9.9,89.2],[10.61,88.2],[11.324,89.6],[12.037,89.2],[12.751,89.3],[13.467,88.6],[14.181,89.2],[14.894,89.3],[15.608,89.9],[16.321,90.3],[17.035,90.1],[17.751,90.6],[18.465,90.4],[19.178,89.8],[19.895,90.0],[20.608,89.9],[21.325,90.3],[22.038,89.9],[22.755,90.3],[23.468,90.6],[24.185,90.4],[24.899,90.8],[25.615,90.4],[26.329,90.2],[27.042,90.4],[27.759,90.1],[28.475,90.3],[29.189,90.2],[29.906,90.5],[30.619,90.5],[31.336,91.2],[32.052,91.3],[32.766,90.5],[33.482,90.8],[34.199,90.7],[34.912,90.9],[35.629,91.1],[36.346,90.8],[37.062,91.5],[37.671,90.9]],"dr_nr":[[0.0,46.1],[0.599,49.0],[1.253,66.4],[1.912,68.4],[2.575,72.1],[3.238,79.0],[3.903,82.2],[4.566,81.5],[5.232,86.1],[5.898,84.7],[6.564,83.9],[7.233,85.3],[7.899,84.5],[8.565,84.1],[9.234,85.0],[9.903,86.0],[10.569,86.2],[11.235,85.9],[11.904,88.0],[12.573,88.2],[13.239,86.4],[13.908,86.5],[14.577,86.8],[15.246,86.3],[15.918,86.9],[16.587,87.4],[17.256,88.3],[17.926,88.2],[18.595,87.0],[19.264,88.6],[19.933,88.3],[20.605,87.9],[21.274,88.0],[21.946,88.5],[22.615,88.5],[23.285,88.1],[23.954,88.2],[24.626,87.2],[25.298,87.4],[25.967,87.1],[26.639,87.5],[27.308,88.5],[27.981,87.3],[28.653,88.1],[29.322,88.1],[29.994,87.9],[30.667,87.5],[31.339,87.4],[32.008,87.9],[32.68,86.9],[33.352,87.3],[34.025,87.7],[34.697,88.0],[35.268,87.7]],"nr_r":[[0.0,45.2],[0.403,46.6],[0.847,56.9],[1.3,64.5],[1.754,57.0],[2.207,55.5],[2.664,66.1],[3.12,71.6],[3.58,68.5],[4.033,72.9],[4.49,74.0],[4.95,76.5],[5.407,77.5],[5.863,74.5],[6.32,76.6],[6.78,81.1],[7.236,78.0],[7.693,78.9],[8.153,83.0],[8.609,77.9],[9.066,74.7],[9.526,77.1],[9.982,76.5],[10.442,73.9],[10.902,80.7],[11.358,75.9],[11.818,82.3],[12.278,80.7],[12.735,78.8],[13.194,76.7],[13.654,79.7],[14.114,77.6],[14.571,78.6],[15.03,77.4],[15.49,80.5],[15.95,80.4],[16.41,83.0],[16.866,80.0],[17.326,74.9],[17.786,80.9],[18.246,80.0],[18.706,79.9],[19.165,73.9],[19.622,74.9],[20.082,71.1],[20.538,70.0],[20.722,70.3]],"sp_r":[[0.0,45.2],[0.656,54.6],[1.357,66.0],[2.064,71.3],[2.775,75.3],[3.485,79.9],[4.198,82.0],[4.909,83.8],[5.622,84.8],[6.336,85.2],[7.046,86.4],[7.759,85.2],[8.473,85.5],[9.186,85.7],[9.9,87.6],[10.61,86.4],[11.324,86.8],[12.037,85.9],[12.751,85.7],[13.467,86.2],[14.181,86.5],[14.894,86.8],[15.608,87.0],[16.321,87.9],[17.035,87.2],[17.751,87.5],[18.465,87.2],[19.178,87.2],[19.895,87.6],[20.608,88.2],[21.325,88.0],[22.038,87.9],[22.755,88.2],[23.468,88.3],[24.185,88.1],[24.899,88.2],[25.615,88.5],[26.329,88.1],[27.042,88.4],[27.759,88.6],[28.475,88.7],[29.189,88.7],[29.906,88.8],[30.619,88.6],[31.336,88.5],[32.052,88.9],[32.766,88.5],[33.482,88.9],[34.199,89.0],[34.912,88.8],[35.629,89.3],[36.346,89.0],[37.062,89.3],[37.671,89.2]],"dr_r":[[0.0,45.5],[0.599,50.5],[1.253,66.2],[1.912,69.8],[2.575,73.1],[3.238,78.6],[3.903,80.9],[4.566,81.6],[5.232,83.6],[5.898,83.4],[6.564,84.0],[7.233,84.5],[7.899,84.6],[8.565,84.7],[9.234,84.8],[9.903,84.9],[10.569,84.7],[11.235,85.0],[11.904,85.5],[12.573,85.4],[13.239,85.0],[13.908,85.6],[14.577,85.7],[15.246,85.0],[15.918,86.0],[16.587,86.1],[17.256,85.7],[17.926,86.0],[18.595,85.8],[19.264,86.4],[19.933,86.3],[20.605,86.3],[21.274,85.8],[21.946,86.7],[22.615,86.6],[23.285,86.3],[23.954,86.4],[24.626,86.4],[25.298,86.3],[25.967,85.9],[26.639,86.6],[27.308,86.8],[27.981,86.8],[28.653,86.6],[29.322,86.9],[29.994,87.1],[30.667,87.0],[31.339,87.1],[32.008,86.8],[32.68,87.1],[33.352,87.0],[34.025,87.6],[34.697,87.3],[35.268,87.0]]},"types":[{"label":"stationary","n":120,"diff":11.1},{"label":"starting right turn","n":98,"diff":7.9},{"label":"near multiple vehicles","n":63,"diff":7.8},{"label":"stopping with lead","n":93,"diff":6.3},{"label":"low magnitude speed","n":53,"diff":5.7},{"label":"on intersection","n":143,"diff":4.6},{"label":"on stopline traffic light","n":35,"diff":4.4},{"label":"starting left turn","n":100,"diff":4.2},{"label":"changing lane","n":45,"diff":3.8},{"label":"on pickup dropoff","n":112,"diff":1.9},{"label":"high magnitude speed","n":76,"diff":0.3},{"label":"high lateral acceleration","n":68,"diff":-0.3},{"label":"waiting for pedestrian to cross","n":53,"diff":-9.4}]}</script>
+<script>
+(() => {
+  const DATA = JSON.parse(document.getElementById("chart-data").textContent);
+  const NS = "http://www.w3.org/2000/svg";
+  const RUNS = {
+    gpu1_nr: { name: "Replayed traffic, 1 GPU", color: "var(--c-gpu1)", markers: true, traffic: "NR" },
+    nr_nr: { name: "Replayed traffic", color: "var(--blue)", traffic: "NR" },
+    sp_nr: { name: "Self-play", color: "var(--orange)", traffic: "NR" },
+    dr_nr: { name: "Self-play + DR", color: "var(--teal)", traffic: "NR" },
+    nr_r: { name: "Replayed traffic", color: "var(--blue)", traffic: "R" },
+    sp_r: { name: "Self-play", color: "var(--orange)", traffic: "R" },
+    dr_r: { name: "Self-play + DR", color: "var(--teal)", traffic: "R" },
+  };
+  const PANELS = {
+    scale: { runs: ["gpu1_nr", "nr_nr"], xMax: 22, xTicks: [0, 5, 10, 15, 20], label: "Replayed traffic on 1 GPU and on 8 GPUs, non-reactive" },
+    nr: { runs: ["nr_nr", "sp_nr", "dr_nr"], xMax: 40, xTicks: [0, 10, 20, 30, 40], label: "Three training settings, non-reactive traffic" },
+    r: { runs: ["nr_r", "sp_r", "dr_r"], xMax: 40, xTicks: [0, 10, 20, 30, 40], label: "Three training settings, reactive traffic" },
+  };
+  const Y = { min: 55, max: 94, ticks: [60, 70, 80, 90] };
+  const el = (name, attrs, parent) => {
+    const node = document.createElementNS(NS, name);
+    for (const key in attrs) node.setAttribute(key, attrs[key]);
+    if (parent) parent.appendChild(node);
+    return node;
+  };
+  const fmtYears = (v) => (v < 10 ? v.toFixed(1) : v.toFixed(0)) + " years";
+
+  function lineChart(host, panel) {
+    const series = panel.runs.map((key) => ({ key, ...RUNS[key], points: DATA.curves[key] }));
+    const snaps = [...new Set(series.flatMap((s) => s.points.map((p) => p[0])))].sort((a, b) => a - b);
+    const tip = document.createElement("div");
+    tip.className = "tip";
+    tip.hidden = true;
+    host.appendChild(tip);
+    let svg = null, current = -1;
+
+    function nearest(points, x) {
+      let best = null;
+      for (const p of points) if (!best || Math.abs(p[0] - x) < Math.abs(best[0] - x)) best = p;
+      const first = points[0][0], last = points[points.length - 1][0];
+      return x < first - 0.6 || x > last + 0.6 ? null : best;
+    }
+
+    function render() {
+      if (svg) svg.remove();
+      const W = Math.max(host.clientWidth, 200), H = 220;
+      const m = { l: 28, r: 10, t: 8, b: 40 };
+      const iw = W - m.l - m.r, ih = H - m.t - m.b;
+      const sx = (v) => m.l + (v / panel.xMax) * iw;
+      const sy = (v) => m.t + (1 - (v - Y.min) / (Y.max - Y.min)) * ih;
+      svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`, tabindex: "0", role: "img", "aria-label": panel.label + ". Use the arrow keys to read values." });
+      host.insertBefore(svg, tip);
+      for (const t of Y.ticks) {
+        el("line", { x1: m.l, x2: W - m.r, y1: sy(t), y2: sy(t), class: "grid" }, svg);
+        el("text", { x: m.l - 6, y: sy(t) + 4, "text-anchor": "end", class: "tick" }, svg).textContent = t;
+      }
+      for (const t of panel.xTicks) {
+        el("text", { x: sx(t), y: m.t + ih + 16, "text-anchor": "middle", class: "tick" }, svg).textContent = t;
+      }
+      el("line", { x1: m.l, x2: W - m.r, y1: m.t + ih, y2: m.t + ih, class: "axis" }, svg);
+      el("text", { x: m.l + iw / 2, y: H - 6, "text-anchor": "middle", class: "axis-label" }, svg).textContent = "driving experience (years)";
+      const clipId = "clip-" + Math.random().toString(36).slice(2);
+      el("rect", { x: m.l, y: m.t - 6, width: iw + 6, height: ih + 6 }, el("clipPath", { id: clipId }, el("defs", {}, svg)));
+      const plot = el("g", { "clip-path": `url(#${clipId})` }, svg);
+      for (const s of series) {
+        const d = s.points.map((p, i) => (i ? "L" : "M") + sx(p[0]).toFixed(1) + " " + sy(p[1]).toFixed(1)).join("");
+        el("path", { d, class: "series" }, plot).style.stroke = s.color;
+        if (s.markers) for (const p of s.points) el("circle", { cx: sx(p[0]), cy: sy(p[1]), r: 4, class: "marker" }, plot).style.fill = s.color;
+        const end = s.points[s.points.length - 1];
+        if (!s.markers) el("circle", { cx: sx(end[0]), cy: sy(end[1]), r: 4, class: "end" }, plot).style.fill = s.color;
+      }
+      const cross = el("line", { y1: m.t, y2: m.t + ih, class: "cross" }, svg);
+      const dots = series.map((s) => { const c = el("circle", { r: 4.5, class: "hover-dot" }, svg); c.style.fill = s.color; return c; });
+      const hide = () => { cross.style.display = "none"; dots.forEach((d) => (d.style.display = "none")); tip.hidden = true; };
+      hide();
+
+      function show(index) {
+        current = Math.max(0, Math.min(snaps.length - 1, index));
+        const x = snaps[current];
+        cross.setAttribute("x1", sx(x)); cross.setAttribute("x2", sx(x)); cross.style.display = "";
+        tip.replaceChildren();
+        const head = document.createElement("div");
+        head.className = "tip-head";
+        head.textContent = fmtYears(x);
+        tip.appendChild(head);
+        series.forEach((s, i) => {
+          const p = nearest(s.points, x);
+          if (!p) { dots[i].style.display = "none"; return; }
+          dots[i].setAttribute("cx", sx(p[0])); dots[i].setAttribute("cy", sy(Math.max(Y.min, p[1])));
+          dots[i].style.display = "";
+          const row = document.createElement("div");
+          row.className = "tip-row";
+          const key = document.createElement("span");
+          key.className = "key line";
+          key.style.setProperty("--c", s.color);
+          const value = document.createElement("b");
+          value.textContent = p[1].toFixed(1);
+          const name = document.createElement("span");
+          name.className = "name";
+          name.textContent = s.name;
+          row.append(key, value, name);
+          tip.appendChild(row);
+        });
+        tip.hidden = false;
+        const px = sx(x), tw = tip.offsetWidth;
+        tip.style.left = (px + 12 + tw > W ? Math.max(0, px - 12 - tw) : px + 12) + "px";
+        tip.style.top = m.t + 4 + "px";
+      }
+
+      svg.addEventListener("pointermove", (event) => {
+        const box = svg.getBoundingClientRect();
+        const x = ((event.clientX - box.left - m.l) / iw) * panel.xMax;
+        let best = 0;
+        for (let i = 1; i < snaps.length; i++) if (Math.abs(snaps[i] - x) < Math.abs(snaps[best] - x)) best = i;
+        show(best);
+      });
+      svg.addEventListener("pointerleave", hide);
+      svg.addEventListener("blur", hide);
+      svg.addEventListener("focus", () => show(current < 0 ? snaps.length - 1 : current));
+      svg.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+          event.preventDefault();
+          show(current + (event.key === "ArrowRight" ? 1 : -1));
+        } else if (event.key === "Escape") hide();
+      });
+    }
+    render();
+    let frame = 0, width = host.clientWidth;
+    new ResizeObserver(() => {
+      if (host.clientWidth === width) return;
+      width = host.clientWidth;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(render);
+    }).observe(host);
+  }
+
+  document.querySelectorAll("[data-chart]").forEach((host) => lineChart(host, PANELS[host.dataset.chart]));
+
+  // Data table for the curves.
+  const body = document.querySelector("#curves-table tbody");
+  for (const key of Object.keys(RUNS)) {
+    for (const [years, score] of DATA.curves[key]) {
+      const row = body.insertRow();
+      for (const text of [RUNS[key].name, RUNS[key].traffic, years.toFixed(2), score.toFixed(1)]) row.insertCell().textContent = text;
+    }
+  }
+
+  // Diverging bars: self-play minus replayed traffic per scenario type.
+  const bars = document.getElementById("types-chart");
+  const min = -14, max = 14, pos = (v) => ((v - min) / (max - min)) * 100;
+  const ticks = [-10, 0, 10];
+  for (const item of DATA.types) {
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    row.tabIndex = 0;
+    row.setAttribute("role", "listitem");
+    const sign = item.diff >= 0 ? "+" : "−";
+    const value = sign + Math.abs(item.diff).toFixed(1);
+    row.setAttribute("aria-label", `${item.label}, ${item.n} scenarios: ${value} points`);
+    row.title = `${item.label} · ${item.n} scenarios · self-play − replayed traffic: ${value}`;
+    const label = document.createElement("span");
+    label.className = "bar-label";
+    label.textContent = item.label;
+    const n = document.createElement("span");
+    n.className = "n";
+    n.textContent = item.n;
+    label.appendChild(n);
+    const track = document.createElement("div");
+    track.className = "bar-track";
+    for (const t of ticks) {
+      const line = document.createElement("span");
+      line.className = "gl" + (t === 0 ? " zero" : "");
+      line.style.left = pos(t) + "%";
+      track.appendChild(line);
+    }
+    const bar = document.createElement("span");
+    const positive = item.diff >= 0;
+    bar.className = "bar " + (positive ? "pos" : "neg");
+    bar.style.setProperty("--c", positive ? "var(--orange)" : "var(--blue)");
+    bar.style.left = pos(Math.min(0, item.diff)) + "%";
+    bar.style.width = Math.max(pos(Math.abs(item.diff)) - pos(0), 0.4) + "%";
+    const label2 = document.createElement("span");
+    label2.className = "bar-val";
+    label2.textContent = value;
+    if (positive) label2.style.left = `calc(${pos(item.diff)}% + 5px)`;
+    else label2.style.right = `calc(${100 - pos(item.diff)}% + 5px)`;
+    track.append(bar, label2);
+    row.append(label, track);
+    bars.appendChild(row);
+  }
+  const axis = document.createElement("div");
+  axis.className = "bar-axis";
+  const spacer = document.createElement("span");
+  const tickRow = document.createElement("div");
+  tickRow.className = "ticks";
+  for (const t of ticks) {
+    const span = document.createElement("span");
+    span.style.left = pos(t) + "%";
+    span.textContent = t > 0 ? "+" + t : t < 0 ? "−" + -t : "0";
+    tickRow.appendChild(span);
+  }
+  const cap = document.createElement("span");
+  cap.className = "cap";
+  cap.textContent = "Δ score (×100)";
+  axis.append(spacer, tickRow, cap);
+  bars.after(axis);
+})();
+</script>
 
 <script>
 // Play clips only while they are on screen.
