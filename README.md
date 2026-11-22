@@ -77,20 +77,16 @@ Here a lead vehicle brakes (Val14, non-reactive traffic). The policy trained aga
 </table>
 
 <details>
-<summary><b>More cases from the report</b></summary>
+<summary><b>More cases: reactive traffic</b></summary>
 <br>
 
-The next three scenarios are closed-loop rollouts on Val14 in reactive traffic (our simulator). Blue is the policy trained against replayed traffic and orange the self-play policy. The line is the ego's 15 s trajectory, and the red cross marks the collision of the replay-trained policy.
+These three scenarios are closed-loop rollouts on Val14 in reactive traffic (our simulator). Blue is the policy trained against replayed traffic and orange the self-play policy. The line is the ego's 15 s trajectory, and the red cross marks the collision of the replay-trained policy.
 
 <p align="center">
   <img src="assets/reactive-intersection.png" width="100%"><br><sub>(a) Leaving a stop through an intersection</sub><br><br>
   <img src="assets/reactive-pedestrians.png" width="100%"><br><sub>(b) Pedestrians crossing a pick-up area</sub><br><br>
   <img src="assets/reactive-braking.png" width="100%"><br><sub>(c) Stopping behind a braking lead vehicle</sub>
 </p>
-
-The figure below shows the self-play policy in six Test14-hard scenarios, each scoring at least 0.95 in the devkit in both NR and R. Each 15 s trajectory is coloured from light (start) to dark (end).
-
-<p align="center"><img src="assets/gallery.png" width="100%"></p>
 
 </details>
 
