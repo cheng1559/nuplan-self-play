@@ -175,9 +175,11 @@ p code, li code { background: var(--code-bg); padding: 1px 5px; border-radius: 4
 table.mini { min-width: 0; width: 100%; font-size: 14px; }
 table.mini th, table.mini td { padding: 4px 8px; }
 table.mini thead th { position: sticky; top: 0; background: var(--paper); }
-.split { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; align-items: stretch; }
+.stacked { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+table.sub thead th { white-space: nowrap; }
+table.sub td.run { width: 22%; }
 .bars { display: grid; gap: 4px; }
-.bar-row { display: grid; grid-template-columns: minmax(0, 218px) minmax(0, 1fr); align-items: center; gap: 10px; border-radius: 4px; outline: none; }
+.bar-row { display: grid; grid-template-columns: minmax(0, 250px) minmax(0, 1fr); align-items: center; gap: 10px; border-radius: 4px; outline: none; }
 .bar-row:hover, .bar-row:focus-visible { background: var(--bg); }
 .bar-label { text-align: right; font-size: 13.5px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .bar-label .n { color: var(--muted); font-size: 12px; margin-left: 4px; font-variant-numeric: tabular-nums; }
@@ -188,7 +190,7 @@ table.mini thead th { position: sticky; top: 0; background: var(--paper); }
 .bar.pos { border-radius: 0 4px 4px 0; }
 .bar.neg { border-radius: 4px 0 0 4px; }
 .bar-val { position: absolute; top: 2px; font-size: 12.5px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.bar-axis { display: grid; grid-template-columns: minmax(0, 218px) minmax(0, 1fr); gap: 10px; margin-top: 4px; }
+.bar-axis { display: grid; grid-template-columns: minmax(0, 250px) minmax(0, 1fr); gap: 10px; margin-top: 4px; }
 .bar-axis .ticks { margin-right: 34px; position: relative; height: 18px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .bar-axis .ticks span { position: absolute; transform: translateX(-50%); }
 .bar-axis .cap { grid-column: 2; margin-right: 34px; text-align: center; font-size: 12px; color: var(--muted); }
@@ -197,9 +199,8 @@ table.sub tbody th { text-align: left; font-weight: 600; color: var(--ink-2); ve
 table.sub td.run { text-align: left; white-space: nowrap; padding-left: 8px; }
 table.sub tr.first td, table.sub tr.first th { border-top: 1px solid var(--rule); }
 .table-wrap { overflow-x: auto; }
-.table-note { font-size: 13px; color: var(--muted); margin: 10px 0 0; line-height: 1.5; }
 @media (max-width: 760px) {
-  .multiples, .split { grid-template-columns: minmax(0, 1fr); }
+  .multiples { grid-template-columns: minmax(0, 1fr); }
   .bars { gap: 8px; }
   .bar-row, .bar-axis { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .bar-axis > span:first-child { display: none; }
@@ -372,7 +373,21 @@ table.sub tr.first td, table.sub tr.first th { border-top: 1px solid var(--rule)
     <p>Domain randomization halves at-fault collisions in reactive traffic but leaves the score unchanged. nuPlan measures progress against the human driver, so more cautious driving loses progress. Collision and TTC rates deserve to be reported next to the score.</p>
   </div>
   <figure class="chart-fig" id="fig-types">
-    <div class="split">
+    <div class="stacked">
+      <div class="plate">
+        <div class="chart-top"><p class="chart-title">Val14 sub-metrics (devkit, ×100)</p></div>
+        <div class="table-wrap"><table class="mini sub">
+          <thead><tr><th></th><th>Training</th><th>Score</th><th>No at-fault collision</th><th>TTC within bound</th><th>Progress</th><th>Comfort</th></tr></thead>
+          <tbody>
+            <tr class="first"><th rowspan="3" scope="rowgroup">NR</th><td class="run"><span class="key box" style="--c: var(--blue)"></span>Replayed</td><td>88.9</td><td>95.9</td><td>86.0</td><td><b>95.8</b></td><td>95.8</td></tr>
+            <tr><td class="run"><span class="key box" style="--c: var(--orange)"></span>Self-play</td><td><b>90.2</b></td><td><b>97.1</b></td><td><b>94.0</b></td><td>88.8</td><td><b>96.4</b></td></tr>
+            <tr><td class="run"><span class="key box" style="--c: var(--teal)"></span>+ DR</td><td>87.5</td><td>96.9</td><td>92.1</td><td>83.4</td><td>92.8</td></tr>
+            <tr class="first"><th rowspan="3" scope="rowgroup">R</th><td class="run"><span class="key box" style="--c: var(--blue)"></span>Replayed</td><td>86.3</td><td>93.5</td><td>86.0</td><td><b>92.2</b></td><td>95.2</td></tr>
+            <tr><td class="run"><span class="key box" style="--c: var(--orange)"></span>Self-play</td><td><b>90.5</b></td><td>97.7</td><td>95.0</td><td>88.5</td><td><b>96.7</b></td></tr>
+            <tr><td class="run"><span class="key box" style="--c: var(--teal)"></span>+ DR</td><td>90.3</td><td><b>98.8</b></td><td><b>95.7</b></td><td>83.3</td><td>95.6</td></tr>
+          </tbody>
+        </table></div>
+      </div>
       <div class="plate">
         <div class="chart-top">
           <p class="chart-title">Val14 R score, self-play minus replayed traffic, by scenario type</p>
@@ -383,23 +398,8 @@ table.sub tr.first td, table.sub tr.first th { border-top: 1px solid var(--rule)
         </div>
         <div class="bars" id="types-chart" role="list" aria-label="Score difference per scenario type"></div>
       </div>
-      <div class="plate">
-        <div class="chart-top"><p class="chart-title">Val14 sub-metrics (devkit, ×100)</p></div>
-        <div class="table-wrap"><table class="mini sub">
-          <thead><tr><th></th><th>Training</th><th title="nuPlan score">Score</th><th title="No at-fault collision">Coll.</th><th title="Time to collision within bound">TTC</th><th title="Progress relative to the human driver">Prog.</th><th title="Comfort">Comf.</th></tr></thead>
-          <tbody>
-            <tr class="first"><th rowspan="3" scope="rowgroup">NR</th><td class="run"><span class="key box" style="--c: var(--blue)"></span>Replayed</td><td>88.9</td><td>95.9</td><td>86.0</td><td><b>95.8</b></td><td>95.8</td></tr>
-            <tr><td class="run"><span class="key box" style="--c: var(--orange)"></span>Self-play</td><td><b>90.2</b></td><td><b>97.1</b></td><td><b>94.0</b></td><td>88.8</td><td><b>96.4</b></td></tr>
-            <tr><td class="run"><span class="key box" style="--c: var(--teal)"></span>+ DR</td><td>87.5</td><td>96.9</td><td>92.1</td><td>83.4</td><td>92.8</td></tr>
-            <tr class="first"><th rowspan="3" scope="rowgroup">R</th><td class="run"><span class="key box" style="--c: var(--blue)"></span>Replayed</td><td>86.3</td><td>93.5</td><td>86.0</td><td><b>92.2</b></td><td>95.2</td></tr>
-            <tr><td class="run"><span class="key box" style="--c: var(--orange)"></span>Self-play</td><td><b>90.5</b></td><td>97.7</td><td>95.0</td><td>88.5</td><td><b>96.7</b></td></tr>
-            <tr><td class="run"><span class="key box" style="--c: var(--teal)"></span>+ DR</td><td>90.3</td><td><b>98.8</b></td><td><b>95.7</b></td><td>83.3</td><td>95.6</td></tr>
-          </tbody>
-        </table></div>
-        <p class="table-note">Coll.: no at-fault collision. TTC: time to collision within bound. Prog.: progress relative to the human driver. Comf.: comfort. Bold: best of the three.</p>
-      </div>
     </div>
-    <figcaption><b>Where self-play gains.</b> The bars cover the scenario types with at least 30 Val14 scenarios; the number after each type is its scenario count. The table gives the devkit sub-metrics of the three policies.</figcaption>
+    <figcaption><b>Where self-play gains.</b> Top: devkit sub-metrics of the three policies; bold marks the best of the three. Progress is measured relative to the human driver. Bottom: score difference per scenario type, for the types with at least 30 Val14 scenarios; the number after each type is its scenario count.</figcaption>
   </figure>
 </section>
 
@@ -621,7 +621,7 @@ uv run sim-visualizer --artifact-root data/nuplan/val14 --artifact-root data/nup
 
   // Diverging bars: self-play minus replayed traffic per scenario type.
   const bars = document.getElementById("types-chart");
-  const min = -14, max = 14, pos = (v) => ((v - min) / (max - min)) * 100;
+  const min = -12, max = 14, pos = (v) => ((v - min) / (max - min)) * 100;
   const ticks = [-10, 0, 10];
   for (const item of DATA.types) {
     const row = document.createElement("div");
