@@ -50,7 +50,6 @@ img { height: auto; }
 
 /* Header */
 header.hero { padding-block: 72px 28px; text-align: center; }
-.venue { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 18px; }
 h1 {
   font-family: var(--serif); font-weight: 600; font-size: clamp(28px, 3.5vw, 38px);
   line-height: 1.2; letter-spacing: -.01em; margin: 0 auto 22px; text-wrap: balance;
@@ -135,7 +134,7 @@ p code, li code { background: var(--code-bg); padding: 1px 5px; border-radius: 4
 }
 .copy:hover { color: var(--ink); border-color: var(--ink); }
 
-footer { border-top: 1px solid var(--rule); padding-block: 28px 48px; text-align: center; color: var(--muted); font-size: 14px; }
+.wrap > section:last-child { padding-bottom: 64px; }
 
 /* Charts */
 :root { --c-gpu1: #8080dd; --grid: #ece9e3; --axis: #b9b5ab; }
@@ -227,11 +226,14 @@ table.sub tr.first td, table.sub tr.first th { border-top: 1px solid var(--rule)
 <div class="wrap">
 
 <header class="hero">
-  <p class="venue">CS5478 Intelligent Robots: Algorithms and Systems · Final Project</p>
   <h1><span class="l">Self-Play Reinforcement Learning for Closed-Loop</span> <span class="l">Motion Planning without Human Trajectories</span></h1>
   <p class="authors">Hu Chengcheng</p>
   <p class="affil">National University of Singapore</p>
   <nav class="links" aria-label="Project links">
+    <a href="static/report.pdf">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 1.5h6l3 3v10h-9z"/><path d="M9.5 1.5v3h3M5.5 8h5M5.5 10.5h5M5.5 13h3"/></svg>
+      Report
+    </a>
     <a href="https://github.com/cheng1559/nuplan-self-play">
       <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
       Code
@@ -246,11 +248,11 @@ table.sub tr.first td, table.sub tr.first th { border-top: 1px solid var(--rule)
   <div class="pair">
     <div class="clip" style="--ar: 1044 / 840">
       <div class="frame"><video src="static/video/replay-traffic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="A training world with replayed traffic"></video></div>
-      <figcaption><span class="tag" style="--c: var(--blue)">Replayed traffic</span><span>the ego is the only learner</span></figcaption>
+      <figcaption><span class="tag" style="--c: var(--blue)">Replayed traffic</span></figcaption>
     </div>
     <div class="clip" style="--ar: 1044 / 840">
       <div class="frame"><video src="static/video/selfplay-traffic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="The same world in self-play"></video></div>
-      <figcaption><span class="tag" style="--c: var(--orange)">Self-play</span><span>one policy drives every nearby vehicle</span></figcaption>
+      <figcaption><span class="tag" style="--c: var(--orange)">Self-play</span></figcaption>
     </div>
   </div>
   <figcaption>A training world in our GPU-batched simulator. <b>Left:</b> against replayed traffic, every other vehicle follows its human log. <b>Right:</b> in self-play, one shared policy drives the ego and up to ten vehicles around it, so every nearby vehicle reacts to the others.</figcaption>
@@ -406,19 +408,19 @@ table.sub tr.first td, table.sub tr.first th { border-top: 1px solid var(--rule)
   <h3 class="prose">Self-play in complex scenes</h3>
   <div class="prose"><p>These are Test14-hard scenarios in non-reactive traffic. The self-play policy drives the ego (orange); the grey agents and pedestrians replay their logs.</p></div>
   <div class="grid3">
-    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-1.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Right turn across a busy junction</span><code>00af7480</code></figcaption></figure>
-    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-2.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Turn past a pedestrian crossing</span><code>0a1adb70</code></figcaption></figure>
-    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-3.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Right turn into dense traffic</span><code>2b34e2a1</code></figcaption></figure>
-    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-4.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Crossing a multi-way intersection</span><code>51b40354</code></figcaption></figure>
-    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-5.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Roundabout with merging traffic</span><code>62db9dc1</code></figcaption></figure>
-    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-6.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Through a crosswalk junction</span><code>e10289f3</code></figcaption></figure>
+    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-1.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Right turn across a busy junction</span></figcaption></figure>
+    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-2.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Turn past a pedestrian crossing</span></figcaption></figure>
+    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-3.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Right turn into dense traffic</span></figcaption></figure>
+    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-4.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Crossing a multi-way intersection</span></figcaption></figure>
+    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-5.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Roundabout with merging traffic</span></figcaption></figure>
+    <figure class="clip" style="--ar: 820 / 504"><div class="frame"><video src="static/video/showcase-6.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span>Through a crosswalk junction</span></figcaption></figure>
   </div>
 
   <h3 class="prose">Following a braking lead vehicle</h3>
-  <div class="prose"><p>Here both policies drive the same Val14 scene, <code>7426524f</code>, and the other cars replay the log. The lead vehicle brakes. The policy trained against replayed traffic keeps its speed and rear-ends it after 8.6&nbsp;s. The self-play policy slows down early and keeps a safe gap. In the clips, the replay-trained ego turns yellow when its time to collision drops below 0.95&nbsp;s and red when it collides.</p></div>
+  <div class="prose"><p>Here both policies drive the same Val14 scene, and the other cars replay the log. The lead vehicle brakes. The policy trained against replayed traffic keeps its speed and rear-ends it after 8.6&nbsp;s. The self-play policy slows down early and keeps a safe gap. In the clips, the replay-trained ego turns yellow when its time to collision drops below 0.95&nbsp;s and red when it collides.</p></div>
   <div class="pair">
-    <figure class="clip" style="--ar: 740 / 530"><div class="frame"><video src="static/video/demo-replay-trained.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span class="tag" style="--c: var(--blue)">Trained with replayed traffic</span><span>collision at 8.6 s</span></figcaption></figure>
-    <figure class="clip" style="--ar: 740 / 530"><div class="frame"><video src="static/video/demo-selfplay.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span class="tag" style="--c: var(--orange)">Trained with self-play</span><span>no collision</span></figcaption></figure>
+    <figure class="clip" style="--ar: 740 / 530"><div class="frame"><video src="static/video/demo-replay-trained.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span class="tag" style="--c: var(--blue)">Trained with replayed traffic</span></figcaption></figure>
+    <figure class="clip" style="--ar: 740 / 530"><div class="frame"><video src="static/video/demo-selfplay.mp4" autoplay muted loop playsinline preload="metadata"></video></div><figcaption><span class="tag" style="--c: var(--orange)">Trained with self-play</span></figcaption></figure>
   </div>
 
   <h3 class="prose">Reactive traffic</h3>
@@ -468,9 +470,6 @@ uv run sim-visualizer --artifact-root data/nuplan/val14 --artifact-root data/nup
 </section>
 
 </div>
-<footer>
-  <div class="wrap">Built on the <a href="https://www.nuscenes.org/nuplan">nuPlan</a> dataset and devkit.</div>
-</footer>
 
 <script type="application/json" id="chart-data">{"curves":{"gpu1_nr":[[0.2,44.4],[0.409,49.2],[0.622,62.3],[0.834,70.3],[1.046,62.2],[1.259,74.4],[1.475,70.0],[1.687,73.3],[1.903,72.7],[2.115,62.7],[2.331,79.9],[2.546,75.5],[2.759,65.9],[2.974,77.1],[3.19,78.4],[3.402,78.4],[3.618,77.1]],"nr_nr":[[0.0,46.8],[0.403,46.0],[0.847,56.7],[1.3,67.3],[1.754,60.6],[2.207,56.4],[2.664,65.9],[3.12,70.1],[3.58,67.9],[4.033,73.8],[4.49,74.3],[4.95,80.1],[5.407,81.9],[5.863,72.3],[6.32,74.7],[6.78,83.6],[7.236,78.9],[7.693,78.9],[8.153,83.6],[8.609,81.2],[9.066,77.5],[9.526,85.3],[9.982,84.6],[10.442,83.5],[10.902,88.2],[11.358,84.0],[11.818,89.3],[12.278,88.2],[12.735,86.6],[13.194,83.6],[13.654,86.3],[14.114,82.2],[14.571,83.1],[15.03,81.0],[15.49,86.6],[15.95,85.7],[16.41,88.1],[16.866,84.3],[17.326,82.7],[17.786,86.2],[18.246,84.9],[18.706,86.3],[19.165,83.4],[19.622,83.2],[20.082,82.0],[20.538,82.9],[20.722,83.3]],"sp_nr":[[0.0,46.8],[0.656,55.2],[1.357,67.9],[2.064,74.1],[2.775,77.0],[3.485,81.7],[4.198,84.5],[4.909,85.6],[5.622,86.6],[6.336,87.6],[7.046,88.4],[7.759,88.3],[8.473,88.0],[9.186,88.2],[9.9,89.2],[10.61,88.2],[11.324,89.6],[12.037,89.2],[12.751,89.3],[13.467,88.6],[14.181,89.2],[14.894,89.3],[15.608,89.9],[16.321,90.3],[17.035,90.1],[17.751,90.6],[18.465,90.4],[19.178,89.8],[19.895,90.0],[20.608,89.9],[21.325,90.3],[22.038,89.9],[22.755,90.3],[23.468,90.6],[24.185,90.4],[24.899,90.8],[25.615,90.4],[26.329,90.2],[27.042,90.4],[27.759,90.1],[28.475,90.3],[29.189,90.2],[29.906,90.5],[30.619,90.5],[31.336,91.2],[32.052,91.3],[32.766,90.5],[33.482,90.8],[34.199,90.7],[34.912,90.9],[35.629,91.1],[36.346,90.8],[37.062,91.5],[37.671,90.9]],"dr_nr":[[0.0,46.1],[0.599,49.0],[1.253,66.4],[1.912,68.4],[2.575,72.1],[3.238,79.0],[3.903,82.2],[4.566,81.5],[5.232,86.1],[5.898,84.7],[6.564,83.9],[7.233,85.3],[7.899,84.5],[8.565,84.1],[9.234,85.0],[9.903,86.0],[10.569,86.2],[11.235,85.9],[11.904,88.0],[12.573,88.2],[13.239,86.4],[13.908,86.5],[14.577,86.8],[15.246,86.3],[15.918,86.9],[16.587,87.4],[17.256,88.3],[17.926,88.2],[18.595,87.0],[19.264,88.6],[19.933,88.3],[20.605,87.9],[21.274,88.0],[21.946,88.5],[22.615,88.5],[23.285,88.1],[23.954,88.2],[24.626,87.2],[25.298,87.4],[25.967,87.1],[26.639,87.5],[27.308,88.5],[27.981,87.3],[28.653,88.1],[29.322,88.1],[29.994,87.9],[30.667,87.5],[31.339,87.4],[32.008,87.9],[32.68,86.9],[33.352,87.3],[34.025,87.7],[34.697,88.0],[35.268,87.7]],"nr_r":[[0.0,45.2],[0.403,46.6],[0.847,56.9],[1.3,64.5],[1.754,57.0],[2.207,55.5],[2.664,66.1],[3.12,71.6],[3.58,68.5],[4.033,72.9],[4.49,74.0],[4.95,76.5],[5.407,77.5],[5.863,74.5],[6.32,76.6],[6.78,81.1],[7.236,78.0],[7.693,78.9],[8.153,83.0],[8.609,77.9],[9.066,74.7],[9.526,77.1],[9.982,76.5],[10.442,73.9],[10.902,80.7],[11.358,75.9],[11.818,82.3],[12.278,80.7],[12.735,78.8],[13.194,76.7],[13.654,79.7],[14.114,77.6],[14.571,78.6],[15.03,77.4],[15.49,80.5],[15.95,80.4],[16.41,83.0],[16.866,80.0],[17.326,74.9],[17.786,80.9],[18.246,80.0],[18.706,79.9],[19.165,73.9],[19.622,74.9],[20.082,71.1],[20.538,70.0],[20.722,70.3]],"sp_r":[[0.0,45.2],[0.656,54.6],[1.357,66.0],[2.064,71.3],[2.775,75.3],[3.485,79.9],[4.198,82.0],[4.909,83.8],[5.622,84.8],[6.336,85.2],[7.046,86.4],[7.759,85.2],[8.473,85.5],[9.186,85.7],[9.9,87.6],[10.61,86.4],[11.324,86.8],[12.037,85.9],[12.751,85.7],[13.467,86.2],[14.181,86.5],[14.894,86.8],[15.608,87.0],[16.321,87.9],[17.035,87.2],[17.751,87.5],[18.465,87.2],[19.178,87.2],[19.895,87.6],[20.608,88.2],[21.325,88.0],[22.038,87.9],[22.755,88.2],[23.468,88.3],[24.185,88.1],[24.899,88.2],[25.615,88.5],[26.329,88.1],[27.042,88.4],[27.759,88.6],[28.475,88.7],[29.189,88.7],[29.906,88.8],[30.619,88.6],[31.336,88.5],[32.052,88.9],[32.766,88.5],[33.482,88.9],[34.199,89.0],[34.912,88.8],[35.629,89.3],[36.346,89.0],[37.062,89.3],[37.671,89.2]],"dr_r":[[0.0,45.5],[0.599,50.5],[1.253,66.2],[1.912,69.8],[2.575,73.1],[3.238,78.6],[3.903,80.9],[4.566,81.6],[5.232,83.6],[5.898,83.4],[6.564,84.0],[7.233,84.5],[7.899,84.6],[8.565,84.7],[9.234,84.8],[9.903,84.9],[10.569,84.7],[11.235,85.0],[11.904,85.5],[12.573,85.4],[13.239,85.0],[13.908,85.6],[14.577,85.7],[15.246,85.0],[15.918,86.0],[16.587,86.1],[17.256,85.7],[17.926,86.0],[18.595,85.8],[19.264,86.4],[19.933,86.3],[20.605,86.3],[21.274,85.8],[21.946,86.7],[22.615,86.6],[23.285,86.3],[23.954,86.4],[24.626,86.4],[25.298,86.3],[25.967,85.9],[26.639,86.6],[27.308,86.8],[27.981,86.8],[28.653,86.6],[29.322,86.9],[29.994,87.1],[30.667,87.0],[31.339,87.1],[32.008,86.8],[32.68,87.1],[33.352,87.0],[34.025,87.6],[34.697,87.3],[35.268,87.0]]},"types":[{"label":"stationary","n":120,"diff":11.1},{"label":"starting right turn","n":98,"diff":7.9},{"label":"near multiple vehicles","n":63,"diff":7.8},{"label":"stopping with lead","n":93,"diff":6.3},{"label":"low magnitude speed","n":53,"diff":5.7},{"label":"on intersection","n":143,"diff":4.6},{"label":"on stopline traffic light","n":35,"diff":4.4},{"label":"starting left turn","n":100,"diff":4.2},{"label":"changing lane","n":45,"diff":3.8},{"label":"on pickup dropoff","n":112,"diff":1.9},{"label":"high magnitude speed","n":76,"diff":0.3},{"label":"high lateral acceleration","n":68,"diff":-0.3},{"label":"waiting for pedestrian to cross","n":53,"diff":-9.4}]}</script>
 <script>
