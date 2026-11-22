@@ -1,0 +1,3 @@
+# @package _global_
+# No per-simulation callbacks: no simulation logs (large) and no TensorBoard writer.
+callback: {}

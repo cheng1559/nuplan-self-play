@@ -1,0 +1,8 @@
+single_frame_planner:
+  _target_: cs5478_project.nuplan_sim.planner.SingleFramePlanner
+  _convert_: 'all'
+  checkpoint: ???
+  action: mode             # Beta mode or mean
+  goal_horizon_s: null     # null: the checkpoint's own
+  device: cpu
+  reward_weights: null     # {name: value} told to a reward-conditioned policy; null: defaults
