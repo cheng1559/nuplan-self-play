@@ -6,6 +6,7 @@
 </p>
 
 <p align="center">
+  <a href="https://cheng1559.github.io/nuplan-self-play/"><b>Project page</b></a> ·
   <a href="#results">Results</a> ·
   <a href="#cases">Cases</a> ·
   <a href="#setup">Setup</a> ·
